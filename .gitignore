@@ -1,20 +1,105 @@
-# python
+# Generated with gitignore.io (https://www.toptal.com/developers/gitignore)
+
+# Python
 __pycache__/
 *.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+build/
+dist/
+*.egg
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+MANIFEST
+*.so
 
-# jupyter notebook checkpoints
+# Jupyter Notebook
 .ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+profile_default/
+ipython_config.py
 
-# virtual environments
+# Virtual Environments
 venv/
 .venv/
 env/
+ENV/
+env.bak/
+venv.bak/
+.virtualenv
 
-# qiskit / python artifacts
+# Distribution / Packaging
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+.installed.cfg
+
+# Unit Test / Coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Logs & Databases
 *.log
+*.sql
+*.sqlite
+*.sqlite3
 
-# os files
+# IDEs & Editors
+# VS Code
+.vscode/
+
+# JetBrains (PyCharm, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Spyder
+.spyderproject.db
+.spyproject
+
+# Rope
+.ropeproject
+
+# OS Files
+# macOS
 .DS_Store
-Thumbs.db
+.AppleDouble
+.LSOverride
+._*
 
-.vscode
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+# Secrets & Credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# Qiskit / IBM Quantum
+qiskit-ibm.json
+ibm-quantum-credentials.json
