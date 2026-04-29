@@ -7,7 +7,14 @@
 ## Table of Contents
 
 - [About](#about)
+- [Background](#background)
 - [Algorithm Overview](#algorithm-overview)
+- [Problems — Detailed Walkthrough](#problems--detailed-walkthrough)
+  - [Problem 1 — Generating Random Boolean Functions](#problem-1--generating-random-boolean-functions)
+  - [Problem 2 — Classical Testing](#problem-2--classical-testing)
+  - [Problem 3 — Quantum Oracles](#problem-3--quantum-oracles)
+  - [Problem 4 — Deutsch's Algorithm (1-bit)](#problem-4--deutschs-algorithm-1-bit)
+  - [Problem 5 — Deutsch–Jozsa Algorithm (4-bit)](#problem-5--deutschjozsa-algorithm-4-bit)
 - [Repository Structure](#repository-structure)
 - [Environment](#environment)
 - [Installation](#installation)
@@ -23,26 +30,19 @@
 
 This repository is a Jupyter Notebook submission for the **Emerging Technologies** module. It explores the **[Deutsch–Jozsa algorithm](https://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm)** — one of the earliest proofs that a quantum computer can outperform a classical one for a specific task. The notebook is structured as five interconnected problems, starting from pure Python and progressing to full quantum circuits simulated with IBM's Qiskit framework.
 
-### Before We Begin
+---
+
+## Background
 
 ### Deutsch and the Turing Machine — Where This All Started
 
-Before there were quantum computers, computers were understood through a thought experiment called the **[Turing machine](https://en.wikipedia.org/wiki/Turing_machine)**, invented by [Alan Turing](https://en.wikipedia.org/wiki/Alan_Turing) in 1936. A Turing machine is an imaginary device that reads and writes symbols on a tape, one step at a time. Turing proved that any computation a real computer can do, this simple machine can also do — it became the universal definition of "what computers can compute." Every classical computer you have ever used — phone, laptop, ATM — is essentially a Turing machine running very fast.
+Before there were quantum computers, computers were understood through a thought experiment called the **[Turing machine](https://en.wikipedia.org/wiki/Turing_machine)**, invented by [Alan Turing](https://en.wikipedia.org/wiki/Alan_Turing) in 1936. A Turing machine is an imaginary device that reads and writes symbols on a tape, one step at a time. Turing proved that any computation a real computer can do, this simple machine can also do — it became the universal definition of "what computers can compute."
 
-In 1985, British physicist **[David Deutsch](https://en.wikipedia.org/wiki/David_Deutsch)** asked a deeper question: *what if the tape could be quantum?* He replaced Turing's classical tape with quantum mechanics — superposition, interference, entanglement — and described the first **[quantum Turing machine](https://en.wikipedia.org/wiki/Quantum_Turing_machine)**. This was the theoretical birth of quantum computing. Deutsch was the first person to prove that a quantum computer is strictly more powerful than a classical one for certain tasks, not just faster hardware but a fundamentally different model of computation.
+In 1985, British physicist **[David Deutsch](https://en.wikipedia.org/wiki/David_Deutsch)** asked a deeper question: *what if the tape could be quantum?* He replaced Turing's classical tape with quantum mechanics — superposition, interference, entanglement — and described the first **[quantum Turing machine](https://en.wikipedia.org/wiki/Quantum_Turing_machine)**. This was the theoretical birth of quantum computing. In 1992, he and [Richard Jozsa](https://en.wikipedia.org/wiki/Richard_Jozsa) generalised the result to functions with many inputs, creating the **Deutsch–Jozsa algorithm** that this notebook implements.
 
-From that theoretical foundation, Deutsch designed the first concrete quantum algorithm — **[Deutsch's algorithm](https://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm)** — which checks whether a function always returns the same output using only *one* query instead of two. In 1992, he and [Richard Jozsa](https://en.wikipedia.org/wiki/Richard_Jozsa) generalised it to functions with many inputs, creating the **Deutsch–Jozsa algorithm** that this notebook implements. It is the direct descendant of the idea Deutsch first sketched on the theoretical foundations that Turing laid.
+### IBM — From Mainframes to Quantum
 
----
-
-### IBM — From ThinkPads and Mainframes to Quantum
-
-**[IBM](https://en.wikipedia.org/wiki/IBM)** (International Business Machines) has been at the centre of computing for over a century.
-
-- **Hardware roots** IBM built the computers that powered the Apollo missions and the first airline reservation systems. Their **[mainframe computers](https://en.wikipedia.org/wiki/IBM_mainframe)** still run the world's financial infrastructure today — an estimated 95 % of ATM transactions, 80 % of the world's credit card transactions, and nearly all of the world's major stock exchanges pass through IBM mainframes every day ([IBM, 2023](https://www.ibm.com/thought-leadership/institute-business-value/en-us/report/mainframe)).
-- **ThinkPad** IBM introduced the **[ThinkPad laptop](https://en.wikipedia.org/wiki/ThinkPad)** in 1992. It became the most iconic business laptop of its generation — used everywhere from boardrooms to the International Space Station. IBM sold the ThinkPad line to [Lenovo](https://en.wikipedia.org/wiki/Lenovo) in 2005, but its legacy shaped how the world works on portable computers.
-- **Banking and business** IBM's software and cloud services handle the back-end of banking, insurance, logistics, and healthcare worldwide. When you tap your bank card or transfer money, the systems verifying that transaction almost certainly ran on IBM technology at some point in the chain.
-- **Why quantum?** The problems that matter most to IBM's clients — finding the lowest-energy drug molecule, optimising global supply chains, breaking or protecting encryption — are too hard for even the fastest classical computers. Quantum computing offers a path to solving them. In 2016 IBM launched **[IBM Quantum](https://www.ibm.com/quantum)** (originally IBM Q Experience), the world's first publicly accessible quantum computer over the cloud. Any researcher, student, or business can submit a quantum circuit and have it run on real quantum hardware in IBM's data centres. This notebook uses IBM's open-source quantum software framework, **[Qiskit](https://qiskit.org/)**, to simulate that same hardware locally.
+**[IBM](https://en.wikipedia.org/wiki/IBM)** has been at the centre of computing for over a century. Their mainframe computers still process an estimated 95 % of ATM transactions and 80 % of the world's credit card transactions daily. In 2016 IBM launched **[IBM Quantum](https://www.ibm.com/quantum)** — the world's first publicly accessible quantum computer over the cloud. This notebook uses IBM's open-source quantum framework, **[Qiskit](https://qiskit.org/)**, to simulate quantum circuits locally.
 
 ---
 
@@ -50,13 +50,214 @@ From that theoretical foundation, Deutsch designed the first concrete quantum al
 
 The Deutsch–Jozsa algorithm determines whether a Boolean function is **constant** (always returns the same output) or **balanced** (returns `True` for exactly half of all inputs). A classical computer needs up to $2^{n-1}+1$ queries in the worst case; the quantum algorithm answers with a **single query**, regardless of how many input bits there are.
 
-| Problem | Topic | Approach |
-|:---:|:---|:---|
-| 1 | Generating Random Boolean Functions | Classical Python |
-| 2 | Classical Testing | Classical (worst-case $2^{n-1}+1$ queries) |
-| 3 | Quantum Oracles | Qiskit circuit construction |
-| 4 | Deutsch's Algorithm (1-bit) | Quantum — 1 query |
-| 5 | Deutsch–Jozsa (4-bit) | Quantum — 1 query |
+| Problem | Topic | Approach | Key Result |
+|:---:|:---|:---|:---|
+| 1 | Generating Random Boolean Functions | Classical Python | Oracle factory for Problems 2–5 |
+| 2 | Classical Testing | Classical — worst case $2^{n-1}+1$ queries | Establishes the baseline to beat |
+| 3 | Quantum Oracles | Qiskit circuit construction | Bridges classical functions to quantum circuits |
+| 4 | Deutsch's Algorithm (1-bit) | Quantum — 1 query | First proof of quantum advantage |
+| 5 | Deutsch–Jozsa (4-bit) | Quantum — 1 query | Generalisation: works at any scale |
+
+---
+
+## Problems — Detailed Walkthrough
+
+### Problem 1 — Generating Random Boolean Functions
+
+**Goal:** Build a Python function `random_constant_balanced()` that returns a randomly chosen Boolean function on four inputs, guaranteed to be either constant or balanced.
+
+**What is a Boolean function here?**  
+A function $f: \{0,1\}^4 \to \{0,1\}$ takes four binary inputs and returns a single binary output. There are $2^4 = 16$ possible inputs (`0000` through `1111`). The function is:
+- **Constant** — returns the same value (`0` or `1`) for every single one of the 16 inputs.
+- **Balanced** — returns `0` for exactly 8 inputs and `1` for the other 8.
+
+**How it works:**
+
+The function is represented internally as a **16-element tuple** of `0`s and `1`s, where position `i` holds the output for input `i`. For example, a balanced function might look like `(0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1)` — exactly eight `1`s and eight `0`s.
+
+Three helper components are built step by step:
+
+1. **`random_tuple(n)`** — generates a random constant or balanced tuple of length $2^n$. For constant functions it repeats one bit 16 times; for balanced functions it creates a list with eight `0`s and eight `1`s, shuffles it with Fisher-Yates (`random.shuffle`), and converts it to a tuple.
+
+2. **`bin_args_to_int(*args)`** — converts a sequence of Boolean inputs (e.g. `1, 0, 1, 1`) into an integer index (e.g. `11`) so the function can look up the correct tuple entry.
+
+3. **`fclosure(n)`** — returns a **closure**: a Python inner function that captures the randomly generated tuple in its scope. When called with four Boolean inputs, it looks up and returns the corresponding tuple entry. Because the tuple is captured inside the closure, the caller cannot see it — modelling the "black box" oracle used in quantum algorithm theory.
+
+**Why this matters:**  
+These functions are the "mystery oracles" that all subsequent problems must classify. Problem 2 classifies them classically; Problems 3–5 classify them with a quantum circuit. Getting the generator right is the essential first step because every other problem depends on it.
+
+**Key numbers:**
+
+| Type | Count (n=4) | Explanation |
+|:---|:---:|:---|
+| Constant functions | 2 | All-zeros tuple or all-ones tuple |
+| Balanced functions | 12,870 | $\binom{16}{8}$ ways to place eight 1s in 16 positions |
+
+---
+
+### Problem 2 — Classical Testing
+
+**Goal:** Write a function `determine_constant_balanced(f)` that takes a black-box function from Problem 1 and returns `'constant'` or `'balanced'` using only classical evaluation — then analyse how many queries it needs.
+
+**The setup:**  
+In Problem 1 you *built* the mystery function, so you know what it is. In Problem 2 you pretend you *don't* know. Someone hands you a function `f` and all you can do is call it with inputs and observe the outputs. This is the **oracle model**: you treat `f` as a black box.
+
+**Two solutions are implemented and compared:**
+
+1. **`is_constant_or_balanced(f, n)` — brute force**  
+   Calls `try_all(f, n)` to evaluate `f` on all $2^4 = 16$ inputs, collects the output list, then checks: are all outputs identical (constant)? Or do exactly half equal `1` (balanced)? This always requires exactly **16 queries**, regardless of the answer.
+
+2. **`determine_constant_balanced(f)` — early termination**  
+   A smarter approach. It queries inputs one at a time and stops the moment certainty is achieved:
+   - If any two outputs *differ* → must be balanced → **stop immediately** (as few as 2 queries).
+   - If the same output appears $2^{n-1}+1 = 9$ times in a row → must be constant → **stop** (a balanced function cannot produce the same output more than 8 times).
+   
+   The worst case is **9 queries**. Both solutions are verified to agree on 10 random trials.
+
+**Worst-case query count by approach:**
+
+| Approach | Best case | Worst case |
+|:---|:---:|:---:|
+| Brute force | 16 queries | 16 queries |
+| Early termination | 2 queries | **9 queries** |
+| Deutsch–Jozsa (quantum, Problems 4–5) | **1 query** | **1 query** |
+
+**Why this matters:**  
+The exponential worst-case cost — which would be $2^{99}+1$ queries for a 100-bit function — is precisely the bottleneck that quantum computing eliminates. This problem establishes the classical baseline that Deutsch's algorithm beats.
+
+**Mathematical background covered:**  
+The problem also develops the linear algebra used in Problems 3–5, including probability column vectors, stochastic matrices, matrix multiplication, the NOT matrix, and the identity matrix — all built from scratch to show the classical analogues of the quantum operations that follow.
+
+---
+
+### Problem 3 — Quantum Oracles
+
+**Goal:** Translate each of the four single-bit Boolean functions ($f_0$ through $f_3$) into a quantum circuit — a *quantum oracle* — using Qiskit. These circuits are the building blocks for Deutsch's algorithm in Problem 4.
+
+**Why quantum circuits need oracles:**  
+A quantum computer cannot evaluate a classical function directly — it can only apply *unitary* (reversible) operations. The oracle is the standard mechanism for encoding a classical function `f` into a reversible quantum gate. It uses a two-qubit mapping:
+
+$$|x\rangle|y\rangle \;\xrightarrow{U_f}\; |x\rangle|y \oplus f(x)\rangle$$
+
+- **Qubit `x`** (top wire, the input) passes through unchanged.
+- **Qubit `y`** (bottom wire, the *ancilla*) is XOR'd with `f(x)`: flipped if `f(x) = 1`, unchanged if `f(x) = 0`.
+
+XOR is used because it is reversible — no information is destroyed — satisfying the quantum requirement that all operations be unitary.
+
+**The four single-bit functions and their oracle circuits:**
+
+| Oracle | Function | Type | Gates Used | How It Works |
+|:---:|:---:|:---:|:---:|:---|
+| `oracle_f0` | $f(x) = 0$ | Constant | *None* | $y \oplus 0 = y$ — nothing changes, empty circuit |
+| `oracle_f1` | $f(x) = x$ | Balanced | `CX` | CNOT flips `y` only when `x = 1` |
+| `oracle_f2` | $f(x) = \neg x$ | Balanced | `X`, `CX`, `X` | Anti-CNOT: flip `y` when `x = 0` (wrap CNOT with X gates) |
+| `oracle_f3` | $f(x) = 1$ | Constant | `X` on qubit 1 | Always flip `y`, regardless of `x` |
+
+**Mathematical toolkit introduced:**  
+To understand what these circuits actually do, the problem develops the full quantum linear algebra framework:
+- Complex amplitudes and why quantum states use complex numbers instead of real probabilities.
+- The **Born rule**: probability of measuring outcome $a$ is $|\alpha_a|^2$ (square the amplitude).
+- **Unitary matrices**: the quantum equivalent of stochastic matrices — they preserve the total probability (norm) of the state.
+- The **Hadamard gate** `H`: creates superposition ($|0\rangle \to |+\rangle$) and performs interference. Applying `H` twice returns to the original state.
+- The **Kronecker product** `⊗`: combines single-qubit state vectors into multi-qubit state vectors (e.g. $|0\rangle \otimes |1\rangle = |01\rangle$).
+- The **CNOT gate** as a $4 \times 4$ permutation matrix.
+- **Bell states** and quantum entanglement demonstrated with a working Qiskit circuit.
+
+All four oracles are stored in a dictionary at the end, ready to be plugged into Problem 4.
+
+---
+
+### Problem 4 — Deutsch's Algorithm (1-bit)
+
+**Goal:** Assemble the full Deutsch circuit using Qiskit and demonstrate that it classifies each single-bit oracle from Problem 3 correctly using exactly **one query** — where a classical approach needs two.
+
+**The circuit structure:**
+
+```
+|0⟩ ──H──[  Oracle Uf  ]──H──[measure]
+|1⟩ ──H──[             ]
+```
+
+Three composable sub-circuits are built and stitched together with `qc.compose()`:
+
+1. **`start`** — sets qubit 1 to $|1\rangle$ with `X`, then applies `H` to both qubits. This puts qubit 0 into equal superposition $|+\rangle$ and qubit 1 into $|-\rangle = \frac{1}{\sqrt{2}}(|0\rangle - |1\rangle)$. The $|-\rangle$ ancilla is essential — it enables phase kickback.
+
+2. **`oracle`** — one of the four circuits from Problem 3 (swapped in per test).
+
+3. **`end`** — applies `H` to qubit 0, then measures it into a classical bit.
+
+**Why it works — phase kickback and interference:**
+
+When the oracle acts on qubit 0 while qubit 1 is in $|-\rangle$, the result encodes $f(x)$ as a **phase** ($\pm 1$) on qubit 0's amplitude rather than as a bit flip on qubit 1:
+
+$$|x\rangle|-\rangle \;\xrightarrow{U_f}\; (-1)^{f(x)}|x\rangle|-\rangle$$
+
+The final `H` on qubit 0 converts this phase difference into a measurable amplitude:
+- **Constant** ($f(0) = f(1)$) → phases are equal → **constructive interference** at $|0\rangle$ → always measure `0`.
+- **Balanced** ($f(0) \neq f(1)$) → phases differ by sign → **destructive interference** at $|0\rangle$ → always measure `1`.
+
+**Simulation results (1024 shots each on AerSimulator):**
+
+| Oracle | Function | Expected | Result |
+|:---:|:---:|:---:|:---:|
+| `oracle_f0` | $f(x) = 0$ — Constant | `0` | `{'0': 1024}` |
+| `oracle_f1` | $f(x) = x$ — Balanced | `1` | `{'1': 1024}` |
+| `oracle_f2` | $f(x) = \neg x$ — Balanced | `1` | `{'1': 1024}` |
+| `oracle_f3` | $f(x) = 1$ — Constant | `0` | `{'0': 1024}` |
+
+The result is deterministic — all 1024 shots agree every time. This is the first concrete demonstration of quantum advantage in the notebook: **1 query** versus **2 queries** classically.
+
+**Full matrix walkthrough:**  
+The problem traces the complete matrix multiplication chain — $I \otimes X$, $H \otimes H$, CNOT, $H \otimes I$ — step by step with numerical values, showing how the amplitudes evolve from the initial state to the final measurement.
+
+---
+
+### Problem 5 — Deutsch–Jozsa Algorithm (4-bit)
+
+**Goal:** Scale the single-bit Deutsch circuit to the four-bit Boolean functions from Problem 1 and verify that a single quantum query still suffices — where classically up to 9 queries are needed.
+
+**The generalisation:**
+
+| | Deutsch (Problem 4) | Deutsch–Jozsa (Problem 5) |
+|:---|:---:|:---:|
+| Input bits | 1 | **4** |
+| Total qubits | 2 | **5** (4 inputs + 1 ancilla) |
+| Possible inputs | 2 | **16** |
+| Classical worst case | 2 queries | **9 queries** |
+| Quantum queries | 1 | **1** |
+
+**The circuit — three stages:**
+
+```
+|0000⟩ ──H⊗4──[    Oracle Uf    ]──H⊗4──[measure 4 bits]
+  |1⟩  ──H────[                ]
+```
+
+1. **Initialisation** — `X` on the ancilla (qubit 4), then `H` on all 5 qubits. The 4 input qubits enter uniform superposition over all 16 inputs simultaneously; the ancilla enters $|-\rangle$.
+
+2. **Oracle** (`build_dj_oracle`) — reads the 16-element truth-table tuple from Problem 1. For every input `x` where `f(x) = 1`, it uses a **wrap–MCX–unwrap** pattern to stamp a $-1$ phase onto that specific basis state:
+   - *Wrap*: `X` every input qubit that is `0` in `x`'s bit pattern, so the state $|x\rangle$ looks like $|1111\rangle$.
+   - *MCX*: a multi-controlled-X gate targeting the ancilla fires only when all 4 controls are $|1\rangle$ — via phase kickback on $|-\rangle$, this silently flips the sign of $|x\rangle$.
+   - *Unwrap*: reapply the same `X` gates to restore the qubit values.
+   
+   This repeats once per input where `f(x) = 1`, encoding the full truth table as $\pm 1$ phases across all 16 basis states.
+
+3. **Interference and measurement** — `H` on the 4 input qubits, then measure all 4 into classical bits. The phase pattern interferes:
+   - **Constant**: all phases equal → constructive interference at `0000` → always measure `0000`.
+   - **Balanced**: half $+1$, half $-1$ → cancel at `0000` → `0000` is impossible.
+
+**Decision rule:** measure `0000` → **constant**. Anything else → **balanced**.
+
+**Demonstration results:**
+
+| Function | Truth Table | Oracle Action | Measurement | Verdict |
+|:---|:---|:---|:---:|:---:|
+| Constant-0 $f(x)=0$ | All zeros | No gates (identity) | `0000` always | constant |
+| Constant-1 $f(x)=1$ | All ones | All 16 phases → $-1$ (global phase, undetectable) | `0000` always | constant |
+| Balanced A $f(x)=x_0$ | First 8 zeros, last 8 ones | 8 phases flipped; $8\times(+1) + 8\times(-1) = 0$ at `0000` | `0000` never | balanced |
+| Balanced B $f(x)=x_3$ | Alternating `0,1,0,1,…` | 8 alternating phases; same cancellation | `0000` never | balanced |
+
+**Verified on 10 random functions** from `random_constant_balanced()` — quantum result matches classical ground truth every time.
 
 ---
 
@@ -64,12 +265,15 @@ The Deutsch–Jozsa algorithm determines whether a Boolean function is **constan
 
 ```
 emerging-technologies/
-├── problems.ipynb      # Main notebook — all five problems
-├── requirements.txt    # Direct Python dependencies
-├── .gitignore          # Standard Python/Jupyter ignore rules
-└── README.md           # This file
+├── data/
+│   ├── deutsch-circuit-matrix-chain.png # Step-by-step matrix multiplication walkthrough for the Deutsch circuit (Problem 4)
+│   ├── oracle_circuit.png # Diagram of the standard two-qubit oracle structure |x⟩|y⟩ → |x⟩|y⊕f(x)⟩ (Problem 3)
+│   └── oracle_diagram.png   # Full Deutsch algorithm circuit diagram showing H gates, oracle, and measurement (Problem 3)
+├── problems.ipynb   # Main notebook — all five problems from classical Python to full Deutsch–Jozsa quantum circuit
+├── requirements.txt  # Direct Python dependencies (Qiskit, Aer, NumPy, Matplotlib — install with pip)
+├── .gitignore # Excludes virtual environments, Jupyter checkpoints, and Python cache files from version control
+└── README.md # Project overview, problem explanations, installation guide, and references
 ```
-
 ---
 
 ## Environment
@@ -88,38 +292,158 @@ emerging-technologies/
 
 ## Installation
 
-**1. Clone the repository**
+Choose the section that matches your situation.
+
+---
+
+### Option A — GitHub Codespaces (recommended, zero setup)
+
+If you are viewing this repository on GitHub:
+
+1. Click the green **`<> Code`** button.
+2. Select the **Codespaces** tab.
+3. Click **Create codespace on main**.
+
+GitHub will build a cloud environment with Python already installed. Once it opens, skip to [Usage](#usage).
+
+---
+
+### Option B — Local machine (Mac / Linux)
+
+**Prerequisites:** Python 3.10 or newer. Check with:
 
 ```bash
+python3 --version
+```
+
+If Python is not installed, download it from [python.org](https://www.python.org/downloads/) or use your system package manager:
+
+```bash
+# macOS (Homebrew)
+brew install python
+
+# Ubuntu / Debian
+sudo apt update && sudo apt install python3 python3-venv python3-pip
+```
+
+**Steps:**
+
+```bash
+# 1. Clone the repository
 git clone https://github.com/TiffanyYongNgikChee/emerging-technologies.git
 cd emerging-technologies
-```
 
-**2. Create and activate a virtual environment** *(recommended)*
-
-```bash
+# 2. Create a virtual environment (keeps dependencies isolated from your system Python)
 python3 -m venv .venv
-source .venv/bin/activate        # macOS / Linux
-.venv\Scripts\activate           # Windows
+
+# 3. Activate the virtual environment
+source .venv/bin/activate
+# Your prompt should now show (.venv)
+
+# 4. Install dependencies
+pip install -r requirements.txt
+
+# 5. Launch JupyterLab
+jupyter lab
 ```
 
-**3. Install dependencies**
+To deactivate the virtual environment when you are done:
 
 ```bash
-pip install -r requirements.txt
+deactivate
 ```
+
+---
+
+### Option C — Local machine (Windows)
+
+**Prerequisites:** Python 3.10 or newer. Check in Command Prompt or PowerShell:
+
+```powershell
+python --version
+```
+
+If Python is not installed, download it from [python.org](https://www.python.org/downloads/windows/). During installation, tick **"Add Python to PATH"**.
+
+**Steps (PowerShell):**
+
+```powershell
+# 1. Clone the repository
+git clone https://github.com/TiffanyYongNgikChee/emerging-technologies.git
+cd emerging-technologies
+
+# 2. Create a virtual environment
+python -m venv .venv
+
+# 3. Activate the virtual environment
+.venv\Scripts\Activate.ps1
+
+# If you get an execution policy error, run this first, then try again:
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# 4. Install dependencies
+pip install -r requirements.txt
+
+# 5. Launch JupyterLab
+jupyter lab
+```
+
+**Steps (Command Prompt):**
+
+```cmd
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
+jupyter lab
+```
+
+---
+
+### Option D — Conda / Anaconda / Miniconda
+
+If you use Conda (common in academic and data science settings):
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/TiffanyYongNgikChee/emerging-technologies.git
+cd emerging-technologies
+
+# 2. Create a new Conda environment with Python 3.12
+conda create -n emerging-tech python=3.12 -y
+
+# 3. Activate the environment
+conda activate emerging-tech
+
+# 4. Install dependencies via pip inside the Conda environment
+pip install -r requirements.txt
+
+# 5. Launch JupyterLab
+jupyter lab
+```
+
+> **Note:** Use `pip install` here rather than `conda install` — the Qiskit packages are not on the default Conda channels and must come from PyPI.
+---
+
+### Troubleshooting
+
+| Problem | Likely Cause | Fix |
+|:---|:---|:---|
+| `ModuleNotFoundError: No module named 'qiskit'` | Virtual environment not activated | Run `source .venv/bin/activate` (Mac/Linux) or `.venv\Scripts\activate` (Windows) before `jupyter lab` |
+| `jupyter: command not found` | JupyterLab not installed or venv not active | Activate venv, then run `pip install jupyterlab` |
+| `pip install` fails with permission error | Installing into system Python without venv | Always create and activate a virtual environment first (see Options B/C) |
+| Qiskit version conflicts | Mixing system and venv packages | Delete `.venv`, recreate it, and reinstall |
+| Windows: `Activate.ps1 cannot be loaded` | PowerShell execution policy | Run `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser` |
+| Slow install on Colab | Large package download | Normal — Qiskit with visualisation extras is around 400 MB |
 
 ---
 
 ## Usage
 
-**Launch JupyterLab**
+Once JupyterLab is open:
 
-```bash
-jupyter lab
-```
-
-Then open `problems.ipynb` and run all cells top to bottom (**Kernel → Restart Kernel and Run All Cells**).
+1. Open `problems.ipynb` from the file browser on the left.
+2. Run all cells in order: **Kernel → Restart Kernel and Run All Cells**.
+3. Each problem is self-contained with its own explanation, code, and output. Problems must be run in order (1 → 5) because later problems depend on functions defined earlier.
 
 No real quantum hardware is required — all circuits are simulated locally using IBM's [Aer simulator](https://qiskit.github.io/qiskit-aer/).
 
@@ -129,21 +453,21 @@ No real quantum hardware is required — all circuits are simulated locally usin
 
 All direct dependencies are listed in [`requirements.txt`](requirements.txt). Key packages:
 
-| Package | Purpose |
-|:---|:---|
-| `qiskit[visualization]` | Quantum circuit construction and drawing |
-| `qiskit-aer` | Local quantum circuit simulation |
-| `numpy` | Numerical array operations |
-| `matplotlib` | Circuit diagrams and plots |
-| `scipy` / `sympy` | Mathematical utilities |
+| Package | Purpose | Used In |
+|:---|:---|:---|
+| `qiskit[visualization]` | Quantum circuit construction and diagram drawing | Problems 3–5 |
+| `qiskit-aer` | Local quantum circuit simulation (no hardware needed) | Problems 3–5 |
+| `numpy` | Numerical array operations, matrix multiplication | Problems 1–5 |
+| `matplotlib` | Circuit diagrams, measurement histograms | Problems 3–5 |
+| `scipy` / `sympy` | Mathematical utilities | Problems 1–2 |
+| `jupyterlab` | Notebook interface | All |
 
-> **Note on `pip freeze`:** `requirements.txt` lists only direct dependencies without pinned versions, keeping it readable and cross-platform. For a fully reproducible locked environment, use [`pip-tools`](https://github.com/jazzband/pip-tools) (`pip-compile`) to generate a pinned lockfile from this file.
+> **Note on pinning:** `requirements.txt` lists direct dependencies without pinned versions for readability and cross-platform compatibility. For a fully reproducible locked environment, use [`pip-tools`](https://github.com/jazzband/pip-tools): run `pip-compile requirements.txt` to generate a `requirements.lock` file with exact versions.
 
 ---
 
 ## References
-
-References are grouped by the section of the notebook they directly support. Each entry includes a note explaining *why* it was used and how it connects to this submission, along with comparisons to similar works where relevant.
+References are grouped by the section of the notebook they directly support. Each entry includes a note explaining *why* it was used and how it connects to this submission.
 
 ---
 

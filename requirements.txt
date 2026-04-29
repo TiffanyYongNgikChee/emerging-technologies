@@ -1,32 +1,33 @@
-# Interactive Python shell.
+# Notebook interface
+# Interactive Python shell used inside JupyterLab.
 ipython
-# Jupyter notebook/lab support.
+# Connects the Python kernel to the Jupyter interface so cells can run.
 ipykernel
-# Jupyter lab.
+# Main notebook interface — open problems.ipynb with: jupyter lab
 jupyterlab
-# Jupyter notebook.
+# Classic notebook server; also required by some JupyterLab extensions.
 notebook
-# Numerical arrays.
+
+# Core scientific computing
+# Numerical arrays and matrix operations — used in Problems 1–5 for
+# probability vectors, gate matrices, and output classification.
 numpy
-# Data Frames.
-pandas
-# Scientific computing.
+# Scientific computing utilities — used in Problems 1–2 for
+# mathematical helper functions (combinatorics, linear algebra).
 scipy
-# Statistical modeling.
-statsmodels
-# Download financial market data.
-yfinance
-# Plotting.
-matplotlib
-# Statistical data visualization.
-seaborn
-# Quantum computing.
-qiskit[visualization]
-# Quantum simulators.
-qiskit-aer
-# Machine learning.
-scikit-learn
-# Symbolic mathematics.
+# Symbolic mathematics — used in Problems 2–3 to keep expressions like
+# 1/√2 exact rather than floating-point approximations.
 sympy
-# Testing.
-pytest
+# Plotting library — used in Problems 3–5 to draw circuit diagrams
+# and measurement histograms.
+matplotlib
+
+# Quantum computing
+# IBM's quantum framework — used in Problems 3–5 to build and draw
+# quantum circuits (QuantumCircuit, gates, transpile).
+# The [visualization] extra adds circuit diagram rendering via matplotlib.
+qiskit[visualization]
+
+# IBM's local quantum simulator — used in Problems 3–5 to run circuits
+# without real quantum hardware (AerSimulator).
+qiskit-aer
