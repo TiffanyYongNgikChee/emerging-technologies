@@ -3,10 +3,26 @@
 > Classical and quantum implementations of the Deutsch–Jozsa algorithm, built from first principles using Python and Qiskit.
 
 ---
+ 
+## About
+ 
+This repository is a Jupyter Notebook submission for the **Emerging Technologies** module (Summer 25/26, ATU). It explores the **[Deutsch–Jozsa algorithm](https://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm)** — one of the earliest proofs that a quantum computer can outperform a classical one for a specific task. The notebook is structured as five interconnected problems, starting from pure Python and progressing to full quantum circuits simulated with IBM's Qiskit framework.
+ 
+---
+ 
+## Target Audience
+ 
+This submission is written for an **informed computing professional** — someone with a strong background in computing who may not be familiar with quantum computing, Qiskit, or the specific Python libraries used here. Every concept is explained from first principles within the notebook itself. No prior knowledge of quantum mechanics is assumed.
+ 
+Anyone should be able to clone this repository, install the dependencies, and run the notebook from start to finish with no extra help. All setup instructions are in the [Installation](#installation) section below.
+ 
+
+---
 
 ## Table of Contents
 
 - [About](#about)
+- [Target Audience](#target-audience)
 - [Background](#background)
 - [Algorithm Overview](#algorithm-overview)
 - [Problems — Detailed Walkthrough](#problems--detailed-walkthrough)
@@ -23,12 +39,6 @@
 - [References](#references)
 - [Author](#author)
 - [License](#license)
-
----
-
-## About
-
-This repository is a Jupyter Notebook submission for the **Emerging Technologies** module. It explores the **[Deutsch–Jozsa algorithm](https://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm)** — one of the earliest proofs that a quantum computer can outperform a classical one for a specific task. The notebook is structured as five interconnected problems, starting from pure Python and progressing to full quantum circuits simulated with IBM's Qiskit framework.
 
 ---
 
@@ -262,17 +272,17 @@ The problem traces the complete matrix multiplication chain — $I \otimes X$, $
 ---
 
 ## Repository Structure
-
+ 
 ```
 emerging-technologies/
-├── data/
-│   ├── deutsch-circuit-matrix-chain.png # Step-by-step matrix multiplication walkthrough for the Deutsch circuit (Problem 4)
-│   ├── oracle_circuit.png # Diagram of the standard two-qubit oracle structure |x⟩|y⟩ → |x⟩|y⊕f(x)⟩ (Problem 3)
-│   └── oracle_diagram.png   # Full Deutsch algorithm circuit diagram showing H gates, oracle, and measurement (Problem 3)
-├── problems.ipynb   # Main notebook — all five problems from classical Python to full Deutsch–Jozsa quantum circuit
-├── requirements.txt  # Direct Python dependencies (Qiskit, Aer, NumPy, Matplotlib — install with pip)
-├── .gitignore # Excludes virtual environments, Jupyter checkpoints, and Python cache files from version control
-└── README.md # Project overview, problem explanations, installation guide, and references
+├── img/
+│   ├── deutsch-circuit-matrix-chain.png  # Step-by-step matrix multiplication walkthrough for the Deutsch circuit (Problem 4)
+│   ├── oracle_circuit.png                # Diagram of the standard two-qubit oracle structure |x⟩|y⟩ → |x⟩|y⊕f(x)⟩ (Problem 3)
+│   └── oracle_diagram.png                # Full Deutsch algorithm circuit diagram showing H gates, oracle, and measurement (Problem 3)
+├── problems.ipynb                        # Main notebook — all five problems from classical Python to full Deutsch–Jozsa quantum circuit
+├── requirements.txt                      # Direct Python dependencies (Qiskit, Aer, NumPy, Matplotlib — install with pip)
+├── .gitignore                            # Excludes virtual environments, Jupyter checkpoints, and Python cache files from version control
+└── README.md                             # Project overview, problem explanations, installation guide, and references
 ```
 ---
 
@@ -690,7 +700,7 @@ References are grouped by the section of the notebook they directly support. Eac
 [github.com/TiffanyYongNgikChee](https://github.com/TiffanyYongNgikChee)
 
 ---
-
+ 
 ## License
-
-This repository is submitted as academic coursework. All original code and commentary is the work of the author unless otherwise cited.
+ 
+This repository is submitted as academic coursework for the Emerging Technologies module, ATU, Summer 25/26. All original code and commentary is the work of the author unless otherwise cited.
